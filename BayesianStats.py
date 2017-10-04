@@ -59,18 +59,18 @@ mean, var, skew, kurt = st.invgamma.stats(x,
 										moments='mvsk')
 
 
-# fig, ax = plt.subplots(1,1)
-# # posterior
-# ax.plot(x, st.invgamma.pdf(x,a1,scale=b1), 'r-',
-# 		label='invgamma.pdf')
-# # prior
-# ax.plot(x, st.invgamma.pdf(x,a/2,scale=b/2), 'green')
-# # likelihood
-# ax.plot(x, st.invgamma.pdf(x,(n-2)/2,scale=b1-b/2),
-# 												'blue')
-# plt.xlim(0,60)
+fig, ax = plt.subplots(1,1)
+# posterior
+ax.plot(x, st.invgamma.pdf(x,a1,scale=b1), 'r-',
+		label='invgamma.pdf')
+# prior
+ax.plot(x, st.invgamma.pdf(x,a/2,scale=b/2), 'green')
+# likelihood
+ax.plot(x, st.invgamma.pdf(x,(n-2)/2,scale=b1-b/2),
+												'blue')
+plt.xlim(0,60)
 
-# plt.show()
+plt.show()
 
 
 ###############################################
@@ -174,3 +174,35 @@ plt.hist(mu, bins_mu, color='green', label='mu')
 plt.subplot(212)
 plt.hist(r, bins_r, color='blue', label='r')
 plt.show()
+
+
+
+
+##############################################
+# P.133 예제 4-5) 미국 대통령 여론조사
+##############################################
+
+
+NN = 1000
+yy = np.array([727, 583, 137])
+alpha = np.array([1,1,1])
+theta = st.dirichlet.rvs(alpha+yy, size=NN)
+# count = 0
+objt = []
+
+for i in theta:
+	if i[0]>i[1]:
+		# count+=1    # Check out count to be 1000
+		objt.append(i[0]-i[1])
+
+print('theta1이  theta2 보다 작은 경우의 수는 %s 번 입니다.' \
+		 % len(objt))
+
+bins = np.linspace(0.00,0.20,20)
+
+
+plt.figure(1)
+plt.hist(theta[0]-theta[1], bins, color='gray', 
+		label='theta1-theta2')
+plt.show()
+
